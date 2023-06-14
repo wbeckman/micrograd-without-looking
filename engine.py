@@ -121,8 +121,16 @@ class Value:
         return self.mul(other)
 
     def pow(self, power):
+        """
+        Takes self to power. Does not compute gradient for pow, since strange
+        numerical issues can arise with the log operation.
+        """
         if isinstance(power, (int, float)):
             power = Value(data=power)
+        if not isinstance(power, (Value)):
+            print('Exponent for \'pow\' must be int, float, or Value.\nNOTE: If' \
+                  ' Value is provided, gradient will NOT be computed for the exponent')
+            return
 
         def backward():
             """
@@ -130,7 +138,7 @@ class Value:
             """
             self.grad += (self.data ** (power.data - 1)) * power.data * result.grad
 
-        result = Value(self.data ** power.data, children=(self,), _backward=backward, _op='**')
+        result = Value(self.data ** power.data, children=(self,power), _backward=backward, _op='**')
         return result
     
     def __pow__(self, other):
@@ -145,8 +153,9 @@ class Value:
             for f(x)=n^x; f'(x)=n^x log(n)
             """
             self.grad += (other.data ** self.data) * math.log(other.data) * result.grad
+            other.grad += (other.data ** (self.data - 1)) * self.data * result.grad
 
-        result = Value(other.data ** self.data, children=(self,), _backward=backward, _op='rpow')
+        result = Value(other.data ** self.data, children=(self,other), _backward=backward, _op='rpow')
         return result
 
     def div(self, other):

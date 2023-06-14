@@ -2,8 +2,8 @@
 
 
 This is an attempt to reproduce [Karpathy's micrograd library](https://github.com/karpathy/micrograd/) (which uses reverse-mode autodiff
-to calculate gradients) without looking at his source code in order to solidify my understanding
-of backpropagation.
+to calculate gradients on a computational graph. I attempte to do this without looking at his
+source code in order to refresh my understanding of backpropagation.
 
 It should be noted that I'm doing this purely for pedagogical reasons, and this library is in no
 way useful in a production sense.
@@ -17,10 +17,11 @@ which was causing gradients not to flow backwards.)
 
 ## Running
 
-This library requires no external dependencies. I programmed this using Python 3.11.2, but there's
-no reason it shouldn't work with other versions of Python. Any version of Python that is backwards
-compatible with 3.11.2 should work here as well, and I'm sure plenty of older versions of python3
-will run this as well, but I'm not going to attempt to enumerate them here.
+This library requires no external dependencies (unless you want to run my Jupyter notebook,
+in which the dependencies are listed at the top). I programmed this using Python 3.11.2, but
+there's no reason it shouldn't work with other versions of Python. Any version of Python that
+is backwards compatible with 3.11.2 should work here as well, and I'm sure plenty of older
+versions of python3 will run this as well, but I'm not going to attempt to enumerate them here.
 
 In order to train the network to "perfect accuracy" on the 4-record toy dataset that he used,
 simply run `python3 main.py` from the root directory and the network will run until it can predict
